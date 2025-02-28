@@ -61,7 +61,7 @@ const WeatherApp = () => {
   };
 
   return (
-    <div className="flex flex-row items-center justify-center min-h-screen bg-gradient-to-r from-gray-900 to-gray-700 text-white p-6">
+    <div className="flex flex-col sm:flex-row items-center justify-center min-h-screen bg-gradient-to-r from-gray-900 to-gray-700 text-white p-6">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -70,7 +70,7 @@ const WeatherApp = () => {
       >
         <h1 className="text-2xl font-bold text-center text-white mb-4">🌤 Weather App</h1>
 
-        <div className="flex space-x-2">
+        <div className="flex flex-col sm:flex-row space-x-0 sm:space-x-2 w-full sm:w-auto">
           <input
             type="text"
             value={city}
@@ -82,7 +82,7 @@ const WeatherApp = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={fetchWeather}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition mt-2 sm:mt-0 sm:w-auto w-full"
           >
             Obtener Clima
           </motion.button>
@@ -128,7 +128,7 @@ const WeatherApp = () => {
         {forecastData && (
           <div className="mt-6 bg-gray-700/80 p-4 rounded-lg border border-gray-500 shadow-md">
             <h3 className="text-lg font-semibold text-center text-white">Pronóstico de 5 días</h3>
-            <div className="grid grid-cols-2 gap-4 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
               {forecastData.map((day, index) => (
                 <div key={index} className="text-center">
                   <p>{new Date(day.dt * 1000).toLocaleDateString()}</p>
@@ -150,7 +150,7 @@ const WeatherApp = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="ml-6 w-full max-w-md h-96 rounded-lg overflow-hidden border border-gray-600 shadow-md"
+          className="ml-6 w-full max-w-md h-96 sm:h-80 rounded-lg overflow-hidden border border-gray-600 shadow-md"
         >
           <MapContainer
             key={`${weatherData.coord.lat}-${weatherData.coord.lon}`}
@@ -158,9 +158,7 @@ const WeatherApp = () => {
             zoom={10}
             className="h-full w-full"
           >
-            {/* Mapa base de OpenStreetMap */}
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            {/* Capa de clima seleccionada */}
             <TileLayer
               url={`${layers[selectedLayer]}${import.meta.env.VITE_API_KEY}`}
               attribution="&copy; OpenWeatherMap"
@@ -172,28 +170,26 @@ const WeatherApp = () => {
         </motion.div>
       )}
 
-      {/* Nueva tarjeta para el selector de capas */}
-<motion.div
-  initial={{ opacity: 0, y: 50 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.8, ease: 'easeOut' }}
-  className="mt-6 ml-6 bg-gray-800/80 p-4 rounded-lg border border-gray-600 shadow-xl w-3/4 max-w-sm text-center"
->
-  <h3 className="text-lg font-semibold text-white mb-3">Seleccionar Capa</h3>
-  <select
-    onChange={handleLayerChange}
-    value={selectedLayer}
-    className="w-full p-2 bg-gray-700 rounded-md text-white border border-gray-500"
-  >
-    <option value="temp_new">Temperatura</option>
-    <option value="clouds_new">Nubes</option>
-    <option value="precipitation_new">Precipitaciones</option>
-    <option value="thunderstorm_new">Tormentas</option>
-    <option value="wind_new">Viento</option>
-    <option value="snow_new">Nieve</option>
-  </select>
-</motion.div>
-
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="mt-6 ml-6 bg-gray-800/80 p-4 rounded-lg border border-gray-600 shadow-xl w-full sm:w-3/4 max-w-sm text-center"
+      >
+        <h3 className="text-lg font-semibold text-white mb-3">Seleccionar Capa</h3>
+        <select
+          onChange={handleLayerChange}
+          value={selectedLayer}
+          className="w-full p-2 bg-gray-700 rounded-md text-white border border-gray-500"
+        >
+          <option value="temp_new">Temperatura</option>
+          <option value="clouds_new">Nubes</option>
+          <option value="precipitation_new">Precipitaciones</option>
+          <option value="thunderstorm_new">Tormentas</option>
+          <option value="wind_new">Viento</option>
+          <option value="snow_new">Nieve</option>
+        </select>
+      </motion.div>
     </div>
   );
 };
